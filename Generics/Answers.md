@@ -17,3 +17,12 @@ Paste the actual compiler error here.
 **Why does the compiler reject it?**
 
 The compiler does not know that `T` has an `Id` property. `T` can represent any type, including types that do not have an `Id`. Therefore, accessing `item.Id` is not allowed without a constraint.
+
+
+## Step 7 — Why Store<string> must NOT compile
+
+`Store<string>` must not compile because `Store<T>` has the constraint `where T : IHasId`. The `string` type does not implement `IHasId` and does not provide the required `Id` property.
+
+## Research — Common name
+
+The common name for this kind of class is a **generic repository**. It provides common operations for storing, retrieving, and removing objects without duplicating the implementation for every type.

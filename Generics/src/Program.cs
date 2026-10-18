@@ -140,17 +140,61 @@ public static class EnumerableExtensions
 }
 
 
+
 public class Program
 {
     public static void Main()
     {
         Store<Student> students = new Store<Student>();
         students.Add(new Student(1, "Somia"));
+        students.Add(new Student(2, "Ahmed"));
+        students.Add(new Student(3, "Mona"));
+        students.Add(new Student(4, "Ali"));
+        students.Add(new Student(5, "Sara"));
 
         Store<Course> courses = new Store<Course>();
-        courses.Add(new Course(1, "C#", 500));
+        courses.Add(new Course(101, "C#", 500));
+        courses.Add(new Course(102, "SQL", 400));
+        courses.Add(new Course(103, "OOP", 600));
 
+        Console.WriteLine("Student by Id:");
         Console.WriteLine(students.GetById(1));
-        Console.WriteLine(courses.GetById(1));
+
+        Console.WriteLine("\nCourse by Id:");
+        Console.WriteLine(courses.GetById(102));
+
+        Console.WriteLine("\nDuplicate Id test:");
+        try
+        {
+            students.Add(new Student(1, "Another Student"));
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        Console.WriteLine("\nPage 2 of students (page size 2):");
+        foreach (Student student in students.GetAll().Page(2, 2))
+        {
+            Console.WriteLine(student);
+        }
+
+        Console.WriteLine("\nFind course by Id using List<Course>:");
+        List<Course> courseList = new List<Course>
+        {
+            new Course(101, "C#", 500),
+            new Course(102, "SQL", 400),
+            new Course(103, "OOP", 600)
+        };
+
+        Console.WriteLine(courseList.FindById(103));
+
+        Console.WriteLine("\nCourse Id dictionary:");
+        IReadOnlyDictionary<int, Course> courseDictionary =
+            courseList.ToIdDictionary();
+
+        Console.WriteLine(courseDictionary[101]);
+
     }
 }
+
