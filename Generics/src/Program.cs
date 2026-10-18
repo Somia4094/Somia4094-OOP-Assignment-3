@@ -70,4 +70,63 @@ public class Program
 
         Console.WriteLine(store.GetById(1));
     }
+
+    public class Course
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public decimal Price { get; set; }
+
+        public Course(int id, string title, decimal price)
+        {
+            Id = id;
+            Title = title;
+            Price = price;
+        }
+
+        public override string ToString()
+        {
+            return $"Course: {Id} - {Title} - {Price}";
+        }
+    }
+
+    public class CourseStore
+    {
+        private readonly List<Course> _courses = new List<Course>();
+
+        public void Add(Course course)
+        {
+            _courses.Add(course);
+        }
+
+        public Course? GetById(int id)
+        {
+            foreach (Course course in _courses)
+            {
+                if (course.Id == id)
+                    return course;
+            }
+
+            return null;
+        }
+
+        public List<Course> GetAll()
+        {
+            return new List<Course>(_courses);
+        }
+
+        public bool Remove(int id)
+        {
+            for (int i = 0; i < _courses.Count; i++)
+            {
+                if (_courses[i].Id == id)
+                {
+                    _courses.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
 }
