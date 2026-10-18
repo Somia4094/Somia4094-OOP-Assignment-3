@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class Student
+public interface IHasId
+{
+    int Id { get; }
+}
+public class Student : IHasId
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -18,7 +22,7 @@ public class Student
     }
 }
 
-public class Course
+public class Course : IHasId
 {
     public int Id { get; set; }
     public string Title { get; set; }
@@ -37,7 +41,7 @@ public class Course
     }
 }
 
-public class Store<T>
+public class Store<T> where T : IHasId
 {
     private readonly List<T> _items = new List<T>();
 
