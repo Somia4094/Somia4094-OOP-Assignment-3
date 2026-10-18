@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 public class Student
@@ -19,38 +18,57 @@ public class Student
     }
 }
 
-public class StudentStore
+public class Course
 {
-    private readonly List<Student> _students = new List<Student>();
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public decimal Price { get; set; }
 
-    public void Add(Student student)
+    public Course(int id, string title, decimal price)
     {
-        _students.Add(student);
+        Id = id;
+        Title = title;
+        Price = price;
     }
 
-    public Student? GetById(int id)
+    public override string ToString()
     {
-        foreach (Student student in _students)
+        return $"Course: {Id} - {Title} - {Price}";
+    }
+}
+
+public class Store<T>
+{
+    private readonly List<T> _items = new List<T>();
+
+    public void Add(T item)
+    {
+        _items.Add(item);
+    }
+
+    public T? GetById(int id)
+    {
+        foreach (T item in _items)
         {
-            if (student.Id == id)
-                return student;
+            if (item.Id == id)
+                return item;
         }
 
-        return null;
+        return default;
     }
 
-    public List<Student> GetAll()
+    public List<T> GetAll()
     {
-        return new List<Student>(_students);
+        return new List<T>(_items);
     }
 
     public bool Remove(int id)
     {
-        for (int i = 0; i < _students.Count; i++)
+        for (int i = 0; i < _items.Count; i++)
         {
-            if (_students[i].Id == id)
+            if (_items[i].Id == id)
             {
-                _students.RemoveAt(i);
+                _items.RemoveAt(i);
                 return true;
             }
         }
@@ -63,70 +81,13 @@ public class Program
 {
     public static void Main()
     {
-        StudentStore store = new StudentStore();
+        Store<Student> students = new Store<Student>();
+        students.Add(new Student(1, "Somia"));
 
-        store.Add(new Student(1, "Somia"));
-        store.Add(new Student(2, "Ahmed"));
+        Store<Course> courses = new Store<Course>();
+        courses.Add(new Course(1, "C#", 500));
 
-        Console.WriteLine(store.GetById(1));
-    }
-
-    public class Course
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public decimal Price { get; set; }
-
-        public Course(int id, string title, decimal price)
-        {
-            Id = id;
-            Title = title;
-            Price = price;
-        }
-
-        public override string ToString()
-        {
-            return $"Course: {Id} - {Title} - {Price}";
-        }
-    }
-
-    public class CourseStore
-    {
-        private readonly List<Course> _courses = new List<Course>();
-
-        public void Add(Course course)
-        {
-            _courses.Add(course);
-        }
-
-        public Course? GetById(int id)
-        {
-            foreach (Course course in _courses)
-            {
-                if (course.Id == id)
-                    return course;
-            }
-
-            return null;
-        }
-
-        public List<Course> GetAll()
-        {
-            return new List<Course>(_courses);
-        }
-
-        public bool Remove(int id)
-        {
-            for (int i = 0; i < _courses.Count; i++)
-            {
-                if (_courses[i].Id == id)
-                {
-                    _courses.RemoveAt(i);
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        Console.WriteLine(students.GetById(1));
+        Console.WriteLine(courses.GetById(1));
     }
 }
